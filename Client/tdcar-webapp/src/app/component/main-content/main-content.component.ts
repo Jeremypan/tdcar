@@ -4,7 +4,7 @@ import {Car} from "../../model/app.model";
 import { MatTableDataSource} from '@angular/material/table';
 import * as _ from 'lodash';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
-import {FormControl, Validators} from "@angular/forms";
+import {AbstractControl, FormControl, ValidationErrors, ValidatorFn, Validators} from "@angular/forms";
 
 
 
@@ -33,8 +33,9 @@ export class MainContentComponent implements OnInit {
     const editCarDialogRef = this.editCarDialog.open(
         EditCarDialogWindow, {
           width:"400px",
-          data: car
-      }
+          data: { carData:car,  plateNumbers: this.dataSource.data.map(c => c.plateNO).filter(num => num!==car.plateNO)
+          }
+       }
     )
 
     editCarDialogRef.afterClosed().subscribe(
@@ -45,14 +46,15 @@ export class MainContentComponent implements OnInit {
          )
        }
     )
-
   }
 
   addCar(){
     const addCarDialogRef = this.addCarDialog.open (
        AddCarDialogWindow, {
          width:"400px",
-         data: this.dataSource.data? this.dataSource.data[this.dataSource.data.length-1] : new Car()
+         data: { carData: this.dataSource.data? this.dataSource.data[this.dataSource.data.length-1] : new Car(),
+                 plateNumbers: this.dataSource.data.map(c => c.plateNO)
+            }
       }
     )
 
@@ -78,15 +80,18 @@ export class AddCarDialogWindow{
   inputCarTransmission:string;
   inputCarPlateNumber:FormControl;
   inputYearControl:FormControl;
-
+  car: Car;
+  allPlateNumbers: string[];
   constructor(
     public dialogRef: MatDialogRef<AddCarDialogWindow>,
-    @Inject(MAT_DIALOG_DATA) public car: Car,
+    @Inject(MAT_DIALOG_DATA) public data: any,
     private carService: CarHttpService
   ) {
+    this.car = data.carData;
+    this.allPlateNumbers = data.plateNumbers;
     this.inputCarModel = new FormControl( "",[Validators.required, Validators.maxLength(15)]);
     this.inputCarColor = new FormControl("", [Validators.required, Validators.maxLength(10)]);
-    this.inputCarPlateNumber = new FormControl("", [Validators.required, Validators.maxLength(10)]);
+    this.inputCarPlateNumber = new FormControl("", [Validators.required, Validators.maxLength(10), this.duplicatePlateNOCheckValidator()]);
     this.inputYearControl = new FormControl("", [Validators.required, Validators.minLength(4), Validators.maxLength(4)]);
   }
 
@@ -105,7 +110,7 @@ export class AddCarDialogWindow{
     });
   }
 
-  validateUpdateButton(): boolean {
+  validateSaveButton(): boolean {
     if(this.inputYearControl.value && this.inputCarModel.value && this.inputCarColor.value && this.inputCarTransmission && this.inputCarPlateNumber.value){
       if(this.validateContentChange()){
         return false;
@@ -116,8 +121,18 @@ export class AddCarDialogWindow{
     return true;
   }
 
+  duplicatePlateNOCheckValidator = ():ValidatorFn => {
+    return (control:AbstractControl) : ValidationErrors | null => {
+      const value = control.value;
+      if(!value) {return null;}
+      if(!this.inputCarPlateNumber){return null;}
+      const duplicateCheck = this.allPlateNumbers.includes(this.inputCarPlateNumber.value);
+      return duplicateCheck? {Duplicate:true}: null;
+    }
+  }
+
   validateContentChange(): boolean{
-    if((this.inputCarColor.value===this.car.color &&
+    if(( this.inputCarColor.value===this.car.color &&
       this.inputCarModel.value===this.car.model &&
       this.inputCarTransmission===this.car.engineTransmission &&
       this.inputYearControl.value===this.car.yearManufactured &&
@@ -125,7 +140,8 @@ export class AddCarDialogWindow{
       this.inputCarModel.value.length>15 ||
       this.inputCarColor.value.length>10 ||
       this.inputYearControl.value.toString().length!==4 ||
-      this.inputCarPlateNumber.value.length > 10
+      this.inputCarPlateNumber.value.length > 10 ||
+      this.allPlateNumbers.includes(this.inputCarPlateNumber.value)
     ) {
       return false;
     }else{
@@ -175,14 +191,18 @@ export class AddCarDialogWindow{
       return "It must have a value";
     }
 
+    if(this.allPlateNumbers.includes(this.inputCarPlateNumber.value)){
+      return "Duplicate Plate Number";
+    }
+
     if(this.inputCarPlateNumber.value.length>10){
       return "The value is in Max 10 chars";
     }else{
       return "";
     }
+
+
   }
-
-
 
 
 }
@@ -198,16 +218,19 @@ export class EditCarDialogWindow{
   inputCarTransmission:string;
   inputCarPlateNumber:FormControl;
   inputYearControl:FormControl;
-
+  allPlateNumbers:string[];
+  car: Car;
   constructor(
     public dialogRef: MatDialogRef<AddCarDialogWindow>,
-    @Inject(MAT_DIALOG_DATA) public car: Car,
+    @Inject(MAT_DIALOG_DATA) public data: any,
     private carService: CarHttpService
   ) {
+    this.car=data.carData;
+    this.allPlateNumbers=data.plateNumbers;
     this.inputCarModel = new FormControl(this.car.model, [Validators.required, Validators.maxLength(15)]);
     this.inputCarColor = new FormControl(this.car.color, [Validators.required, Validators.maxLength(10)]);
     this.inputCarTransmission = this.car.engineTransmission;
-    this.inputCarPlateNumber = new FormControl(this.car.plateNO, [Validators.required, Validators.maxLength(10)]);
+    this.inputCarPlateNumber = new FormControl(this.car.plateNO, [Validators.required, Validators.maxLength(10), this.duplicatePlateNOCheckValidator()]);
     this.inputYearControl = new FormControl(this.car.yearManufactured, [Validators.required, Validators.minLength(4), Validators.maxLength(4)]);
   }
 
@@ -247,11 +270,22 @@ export class EditCarDialogWindow{
        this.inputCarModel.value.length>15 ||
        this.inputCarColor.value.length>10 ||
        this.inputYearControl.value.toString().length!==4 ||
-       this.inputCarPlateNumber.value.length > 10
+       this.inputCarPlateNumber.value.length > 10 ||
+       this.allPlateNumbers.includes(this.inputCarPlateNumber.value)
     ) {
         return false;
     }else{
         return true;
+    }
+  }
+
+  duplicatePlateNOCheckValidator = ():ValidatorFn => {
+    return (control:AbstractControl) : ValidationErrors | null => {
+      const value = control.value;
+      if(!value) {return null;}
+      if(!this.inputCarPlateNumber){return null;}
+      const duplicateCheck = this.allPlateNumbers.includes(this.inputCarPlateNumber.value);
+      return duplicateCheck? {Duplicate:true}: null;
     }
   }
 
@@ -297,10 +331,18 @@ export class EditCarDialogWindow{
           return "It must have a value";
     }
 
+    if(this.allPlateNumbers.includes(this.inputCarPlateNumber.value)){
+      return "Duplicate Plate Number";
+    }
+
     if(this.inputCarPlateNumber.value.length>10){
           return "The value is in Max 10 chars";
     }else{
           return "";
     }
+
+
   }
 }
+
+
