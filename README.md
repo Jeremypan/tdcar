@@ -1,12 +1,12 @@
-#TestDriveCarApplication
+# TestDriveCarApplication
 The application is developed by server-Spring Boot and client-AngularJS.
 
-##Steps of running application
+## Steps of running application
 - Set Up Database
 - Run Server
 - Run Client
 
-###Set Up Database
+### Set Up Database
 Use Docker to install and run MySQL server 
 
 Here is docker command to set up MySQL Server with port 3306 and root user password (password).
@@ -48,7 +48,7 @@ INSERT INTO testdrive.cars (MODEL,YEARMANUFACTURED,COLOR,ENGINETRANSMISSION,PLAT
 ('Mazda3',2019,'Red','auto','8AB1CD'),
 ('CX8',2021,'White','auto','1AC2AB');
 ```
-###Run Server
+### Run Server
 
 
 
