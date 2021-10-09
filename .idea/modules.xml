@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/JavaWebApplication.iml" filepath="$PROJECT_DIR$/.idea/JavaWebApplication.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Server/tdcar.iml" filepath="$PROJECT_DIR$/Server/tdcar.iml" />
+    </modules>
+  </component>
+</project>

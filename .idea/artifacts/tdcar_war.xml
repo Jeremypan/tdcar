@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="tdcar:war">
+    <output-path>$PROJECT_DIR$/Server/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>tdcar</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="tdcar-0.0.1-SNAPSHOT.war">
+      <element id="artifact" artifact-name="tdcar:war exploded" />
+    </root>
+  </artifact>
+</component>
