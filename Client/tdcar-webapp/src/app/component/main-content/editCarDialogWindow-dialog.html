@@ -1,8 +1,8 @@
 <div mat-dialog-content>
-  <p>Add New Car</p>
+  <p>Editing No.{{car.id}} Car Detail</p>
   <mat-form-field class="car-full-width" appearance="fill">
     <mat-label>Model</mat-label>
-    <input id="modelInput" matInput [(ngModel)]="inputCarModel"  type="text" required>
+    <input id="modelInput" matInput [(ngModel)]="inputCarModel"  type="text"  required>
   </mat-form-field>
   <mat-form-field class="car-full-width" appearance="fill">
     <mat-label>Manufactured Year</mat-label>
@@ -14,7 +14,7 @@
   </mat-form-field>
   <mat-form-field class="car-full-width" appearance="fill">
     <mat-label>Engine Transmission</mat-label>
-    <mat-select [(ngModel)]="inputCarTransmission" name="car">
+    <mat-select [(value)]="inputCarTransmission"  name="car">
       <mat-option value="auto">Auto</mat-option>
       <mat-option value="manual">Manual</mat-option>
     </mat-select>
@@ -25,6 +25,6 @@
   </mat-form-field>
 </div>
 <div mat-dialog-actions>
-  <button mat-button (click)="saveCar()" [disabled]="validateSaveButton()" >Save</button>
+  <button mat-button (click)="updateCar()" [disabled]="validateUpdateButton()">Update</button>
   <button mat-button [mat-dialog-close] cdkFocusInitial>Close</button>
 </div>

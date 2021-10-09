@@ -4,7 +4,11 @@ import {HttpClientModule} from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import {CarHttpService} from "./service/car.service";
-import { MainContentComponent, AddCarDialogWindow } from './component/main-content/main-content.component';
+import {
+  MainContentComponent,
+  AddCarDialogWindow,
+  EditCarDialogWindow
+} from './component/main-content/main-content.component';
 import {HttpClientService, httpClientServiceCreator} from "./service/httpClient.service";
 import {HttpHandler} from "@angular/common/http";
 import { MatTableModule } from '@angular/material/table';
@@ -16,7 +20,8 @@ import {FormsModule} from "@angular/forms";
   declarations: [
     AppComponent,
     MainContentComponent,
-    AddCarDialogWindow
+    AddCarDialogWindow,
+    EditCarDialogWindow
   ],
   imports: [
     BrowserModule,
@@ -30,7 +35,7 @@ import {FormsModule} from "@angular/forms";
   providers: [CarHttpService,
     {provide:HttpClientService, useFactory:httpClientServiceCreator, deps:[HttpHandler]}
   ],
-  entryComponents: [MainContentComponent,AddCarDialogWindow],
+  entryComponents: [MainContentComponent, AddCarDialogWindow, EditCarDialogWindow],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
