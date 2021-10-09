@@ -14,7 +14,7 @@ import {HttpHandler} from "@angular/common/http";
 import { MatTableModule } from '@angular/material/table';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ExtraMaterialModule } from "./model/material-module";
-import {FormsModule} from "@angular/forms";
+import { FormsModule, ReactiveFormsModule} from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -30,7 +30,8 @@ import {FormsModule} from "@angular/forms";
     MatTableModule,
     BrowserAnimationsModule,
     ExtraMaterialModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [CarHttpService,
     {provide:HttpClientService, useFactory:httpClientServiceCreator, deps:[HttpHandler]}

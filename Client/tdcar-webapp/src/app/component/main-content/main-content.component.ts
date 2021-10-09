@@ -4,6 +4,7 @@ import {Car} from "../../model/app.model";
 import { MatTableDataSource} from '@angular/material/table';
 import * as _ from 'lodash';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import {FormControl, Validators} from "@angular/forms";
 
 
 
@@ -124,69 +125,114 @@ export class AddCarDialogWindow{
 })
 export class EditCarDialogWindow{
 
-
-  inputCarModel:string;
-  inputCarManufacturedYear:number;
-  inputCarColor:string;
+  inputCarModel:FormControl;
+  inputCarColor:FormControl;
   inputCarTransmission:string;
-  inputCarPlateNumber:string;
+  inputCarPlateNumber:FormControl;
+  inputYearControl:FormControl;
+
   constructor(
     public dialogRef: MatDialogRef<AddCarDialogWindow>,
     @Inject(MAT_DIALOG_DATA) public car: Car,
     private carService: CarHttpService
   ) {
-    this.inputCarModel = this.car.model;
-    this.inputCarManufacturedYear = this.car.yearManufactured;
-    this.inputCarColor = this.car.color;
+    this.inputCarModel = new FormControl(this.car.model, [Validators.required, Validators.maxLength(15)]);
+    this.inputCarColor = new FormControl(this.car.color, [Validators.required, Validators.maxLength(10)]);
     this.inputCarTransmission = this.car.engineTransmission;
-    this.inputCarPlateNumber = this.car.plateNO;
+    this.inputCarPlateNumber = new FormControl(this.car.plateNO, [Validators.required, Validators.maxLength(10)]);
+    this.inputYearControl = new FormControl(this.car.yearManufactured, [Validators.required, Validators.minLength(4), Validators.maxLength(4)]);
   }
 
   updateCar(): void {
     const carModel = new Car();
     carModel.id=this.car.id;
-    carModel.model=this.inputCarModel;
-    carModel.yearManufactured=this.inputCarManufacturedYear;
-    carModel.color=this.inputCarColor;
+    carModel.model=this.inputCarModel.value;;
+    carModel.yearManufactured=this.inputYearControl.value;
+    carModel.color=this.inputCarColor.value;
     carModel.engineTransmission=this.inputCarTransmission;
-    carModel.plateNO=this.inputCarPlateNumber;
+    carModel.plateNO=this.inputCarPlateNumber.value;
     this.carService.saveCar(carModel).subscribe(res => {
       if(res){
         console.log("Car Updates Successfully");
         this.dialogRef.close();
       }
     });
-
   }
 
   validateUpdateButton(): boolean {
-    if(this.inputCarManufacturedYear && this.inputCarModel && this.inputCarColor && this.inputCarTransmission && this.inputCarPlateNumber){
-      if(this.inputCarManufacturedYear.toString().length===4){
-        if(this.validateContentChange()){
-          return false;
-        }else{
-          return true;
-        }
-      }else{
-        return true;
-      }
+    if(this.inputYearControl.value && this.inputCarModel.value && this.inputCarColor.value && this.inputCarTransmission && this.inputCarPlateNumber.value){
+       if(this.validateContentChange()){
+         return false;
+       }else{
+         return true;
+       }
     }
     return true;
   }
 
   validateContentChange(): boolean{
-    if(this.inputCarColor===this.car.color &&
-       this.inputCarModel===this.car.model &&
+    if((this.inputCarColor.value===this.car.color &&
+       this.inputCarModel.value===this.car.model &&
        this.inputCarTransmission===this.car.engineTransmission &&
-       this.inputCarManufacturedYear===this.car.yearManufactured &&
-       this.inputCarPlateNumber===this.car.plateNO) {
+       this.inputYearControl.value===this.car.yearManufactured &&
+       this.inputCarPlateNumber.value===this.car.plateNO) ||
+       this.inputCarModel.value.length>15 ||
+       this.inputCarColor.value.length>10 ||
+       this.inputYearControl.value.toString().length!==4 ||
+       this.inputCarPlateNumber.value.length > 10
+    ) {
         return false;
     }else{
         return true;
     }
+  }
 
+  getErrorMessageInputModel(): string {
+    if(this.inputCarModel.hasError('required')){
+        return "It must have a value";
+    }
+
+    if(this.inputCarModel.value.length>15){
+        return "The value is in Max 15 chars"
+    }else{
+        return "";
+    }
+  }
+
+  getErrorMessageInputYear(): string {
+    if(this.inputYearControl.hasError('required')) {
+          return "It must have a value";
+    }
+
+    if(this.inputYearControl.value.length!==4){
+          return 'It must be a valid number in 4 digits';
+    }else{
+          return "";
+    }
+  }
+
+  getErrorMessageInputColor(): string {
+    if(this.inputCarColor.hasError('required')){
+          return "It must have a value";
+    }
+
+    if(this.inputCarColor.value.length>10){
+          return "The value is in Max 10 chars";
+    }else{
+          return "";
+    }
 
   }
 
+  getErrorMessageInputPlateNO(): string {
+    if(this.inputCarPlateNumber.hasError('required')){
+          return "It must have a value";
+    }
 
+    if(this.inputCarPlateNumber.value.length>10){
+          return "The value is in Max 10 chars";
+    }else{
+          return "";
+    }
+  }
 }
