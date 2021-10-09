@@ -1,7 +1,7 @@
 # TestDriveCarApplication
 The application is developed by server-Spring Boot and client-AngularJS.
 
-## Steps of running application
+## Steps of running application at dev Envrionment
 - Set Up Database
 - Run Server
 - Run Client
@@ -49,7 +49,25 @@ INSERT INTO testdrive.cars (MODEL,YEARMANUFACTURED,COLOR,ENGINETRANSMISSION,PLAT
 ('CX8',2021,'White','auto','1AC2AB');
 ```
 ### Run Server
+Use Intellij to run Spring Boot Server
 
+Open Repo by Intellij and configure spring boot application and start it.
 
+### Run ClientSide
+
+Use Node.js to run ClientSide Application
+
+- to AngularJS App main directory
+```console
+cd ./Client/tdcar-webapp
+```
+- install necessary packages
+```console
+npm install
+```
+- start application
+```console
+npm start
+```
 
 
