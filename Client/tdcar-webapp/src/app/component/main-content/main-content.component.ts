@@ -68,14 +68,22 @@ export class AddCarDialogWindow{
   inputCarPlateNumber:string;
   constructor(
     public dialogRef: MatDialogRef<AddCarDialogWindow>,
-    @Inject(MAT_DIALOG_DATA) public car: Car
+    @Inject(MAT_DIALOG_DATA) public car: Car,
+    private carService: CarHttpService
   ) {
 
 
   }
 
   saveCar(): void {
-    this.dialogRef.close();
+    const carModel = new Car();
+    carModel.model=this.inputCarModel;
+    carModel.yearManufactured=this.inputCarManufacturedYear;
+    carModel.color=this.inputCarColor;
+    carModel.engineTransmission=this.inputCarTransmission;
+    carModel.plateNO=this.inputCarPlateNumber;
+    this.carService.saveCar(carModel).subscribe(value => console.log(value));;
+    // this.dialogRef.close();
   }
 
   validateSaveButton(): boolean {

@@ -18,7 +18,7 @@ public class Car implements Serializable {
 
     @Id
     @Column(name="ID")
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
     @Basic
     @Column(name="Model")
@@ -41,6 +41,14 @@ public class Car implements Serializable {
 
     public Car(Long id, String model, Integer yearManufactured, String color, String engineTransmission, String plateNO) {
         Id = id;
+        Model = model;
+        YearManufactured = yearManufactured;
+        Color = color;
+        EngineTransmission = engineTransmission;
+        PlateNO = plateNO;
+    }
+
+    public Car(String model, Integer yearManufactured, String color, String engineTransmission, String plateNO) {
         Model = model;
         YearManufactured = yearManufactured;
         Color = color;

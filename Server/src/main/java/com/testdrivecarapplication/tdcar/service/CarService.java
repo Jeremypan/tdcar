@@ -9,4 +9,6 @@ public interface CarService {
 
     List<Car> getAllCar();
 
+    void saveCar(Car car);
+
 }

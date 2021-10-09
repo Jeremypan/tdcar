@@ -16,11 +16,16 @@ export class CarHttpService {
   private apiUrl = environment.baseUrl + "/api/car";
 
   private getAllCarUrl = "/getCarList";
+  private saveCarUrl = "/saveCar"
 
   getAllCar():Observable<Car[]> {
     return this.httpClientService.getJson(`${this.apiUrl+this.getAllCarUrl}`).pipe(
       map((res:Car[]) => {return res;})
     );
+  }
+
+  saveCar(car:Car):Observable<any> {
+    return this.httpClientService.postJSONWithRequestBody<Car>(`${this.apiUrl+this.saveCarUrl}`, car)
   }
 
 }
