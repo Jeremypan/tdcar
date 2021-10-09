@@ -11,4 +11,6 @@ public interface CarService {
 
     void saveCar(Car car);
 
+    List<Car> findCarByPlateNumber(String plateNumber);
+
 }

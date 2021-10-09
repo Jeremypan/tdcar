@@ -19,41 +19,93 @@ public class Car implements Serializable {
     @Id
     @Column(name="ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long Id;
+    private Long id;
     @Basic
     @Column(name="Model")
-    private String Model;
+    private String model;
     @Basic
     @Column(name="YEARMANUFACTURED")
-    private Integer YearManufactured;
+    private Integer yearManufactured;
     @Basic
     @Column(name="Color")
-    private String Color;
+    private String color;
     @Basic
     @Column(name="ENGINETRANSMISSION")
-    private String EngineTransmission;
+    private String engineTransmission;
     @Basic
     @Column(name="Plate_No")
-    private String PlateNO;
+    private String plateNO;
 
     public Car() {
     }
 
     public Car(Long id, String model, Integer yearManufactured, String color, String engineTransmission, String plateNO) {
-        Id = id;
-        Model = model;
-        YearManufactured = yearManufactured;
-        Color = color;
-        EngineTransmission = engineTransmission;
-        PlateNO = plateNO;
+        this.id = id;
+        this.model = model;
+        this.yearManufactured = yearManufactured;
+        this.color = color;
+        this.engineTransmission = engineTransmission;
+        this.plateNO = plateNO;
     }
 
     public Car(String model, Integer yearManufactured, String color, String engineTransmission, String plateNO) {
-        Model = model;
-        YearManufactured = yearManufactured;
-        Color = color;
-        EngineTransmission = engineTransmission;
-        PlateNO = plateNO;
+        this.model = model;
+        this.yearManufactured = yearManufactured;
+        this.color = color;
+        this.engineTransmission = engineTransmission;
+        this.plateNO = plateNO;
+    }
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getModel() {
+        return model;
+    }
+
+    public void setModel(String model) {
+        this.model = model;
+    }
+
+    public Integer getYearManufactured() {
+        return yearManufactured;
+    }
+
+    public void setYearManufactured(Integer yearManufactured) {
+        this.yearManufactured = yearManufactured;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public String getEngineTransmission() {
+        return engineTransmission;
+    }
+
+    public void setEngineTransmission(String engineTransmission) {
+        this.engineTransmission = engineTransmission;
+    }
+
+    public String getPlateNO() {
+        return plateNO;
+    }
+
+    public void setPlateNO(String plateNO) {
+        this.plateNO = plateNO;
     }
 
     @Override
@@ -61,59 +113,11 @@ public class Car implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Car car = (Car) o;
-        return Objects.equals(Id, car.Id) && Objects.equals(Model, car.Model) && Objects.equals(YearManufactured, car.YearManufactured) && Objects.equals(Color, car.Color) && Objects.equals(EngineTransmission, car.EngineTransmission) && Objects.equals(PlateNO, car.PlateNO);
+        return Objects.equals(id, car.id) && Objects.equals(model, car.model) && Objects.equals(yearManufactured, car.yearManufactured) && Objects.equals(color, car.color) && Objects.equals(engineTransmission, car.engineTransmission) && Objects.equals(plateNO, car.plateNO);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(Id, Model, YearManufactured, Color, EngineTransmission, PlateNO);
-    }
-
-    public Long getId() {
-        return Id;
-    }
-
-    public void setId(Long id) {
-        Id = id;
-    }
-
-    public String getModel() {
-        return Model;
-    }
-
-    public void setModel(String model) {
-        Model = model;
-    }
-
-    public Integer getYearManufactured() {
-        return YearManufactured;
-    }
-
-    public void setYearManufactured(Integer yearManufactured) {
-        YearManufactured = yearManufactured;
-    }
-
-    public String getColor() {
-        return Color;
-    }
-
-    public void setColor(String color) {
-        Color = color;
-    }
-
-    public String getEngineTransmission() {
-        return EngineTransmission;
-    }
-
-    public void setEngineTransmission(String engineTransmission) {
-        EngineTransmission = engineTransmission;
-    }
-
-    public String getPlateNO() {
-        return PlateNO;
-    }
-
-    public void setPlateNO(String plateNO) {
-        PlateNO = plateNO;
+        return Objects.hash(id, model, yearManufactured, color, engineTransmission, plateNO);
     }
 }

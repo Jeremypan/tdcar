@@ -29,5 +29,10 @@ public class CarServiceImpl implements CarService {
         carRepository.saveAndFlush(car);
     }
 
+    @Override
+    public List<Car> findCarByPlateNumber(String plateNumber) {
+        return carRepository.findByPlateNO(plateNumber);
+    }
+
 
 }

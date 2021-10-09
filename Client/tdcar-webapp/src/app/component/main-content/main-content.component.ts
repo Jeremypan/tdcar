@@ -6,7 +6,11 @@ import * as _ from 'lodash';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import {AbstractControl, FormControl, ValidationErrors, ValidatorFn, Validators} from "@angular/forms";
 
-
+/*
+*
+*  Table && Main Content
+*
+* */
 
 
 @Component({
@@ -69,6 +73,11 @@ export class MainContentComponent implements OnInit {
   }
 }
 
+/*
+*
+*  Add Car Dialog Window
+*
+* */
 
 @Component({
   selector: 'AddCarDialogWindow-dialog',
@@ -120,7 +129,7 @@ export class AddCarDialogWindow{
     }
     return true;
   }
-
+  // Duplicate Plate Number Validator
   duplicatePlateNOCheckValidator = ():ValidatorFn => {
     return (control:AbstractControl) : ValidationErrors | null => {
       const value = control.value;
@@ -140,8 +149,7 @@ export class AddCarDialogWindow{
       this.inputCarModel.value.length>15 ||
       this.inputCarColor.value.length>10 ||
       this.inputYearControl.value.toString().length!==4 ||
-      this.inputCarPlateNumber.value.length > 10 ||
-      this.allPlateNumbers.includes(this.inputCarPlateNumber.value)
+      this.inputCarPlateNumber.value.length > 10 || this.allPlateNumbers.includes(this.inputCarPlateNumber.value)
     ) {
       return false;
     }else{
@@ -206,6 +214,13 @@ export class AddCarDialogWindow{
 
 
 }
+
+/*
+*
+* Edit Car Detial Dialog Window
+*
+* */
+
 
 @Component({
   selector: 'EditCarDialogWindow-dialog',
@@ -340,8 +355,6 @@ export class EditCarDialogWindow{
     }else{
           return "";
     }
-
-
   }
 }
 

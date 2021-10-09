@@ -10,7 +10,7 @@ export class HttpClientService extends HttpClient {
    }
 
    private handleError( httpResponse:HttpErrorResponse){
-      alert(httpResponse.message);
+      alert(httpResponse.error);
    }
 
    get(url:string): Observable<any> {
