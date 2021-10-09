@@ -73,48 +73,116 @@ export class MainContentComponent implements OnInit {
   templateUrl: 'addCarDialogWindow-dialog.html',
 })
 export class AddCarDialogWindow{
-
-
-  inputCarModel:string;
-  inputCarManufacturedYear:number;
-  inputCarColor:string;
+  inputCarModel:FormControl;
+  inputCarColor:FormControl;
   inputCarTransmission:string;
-  inputCarPlateNumber:string;
+  inputCarPlateNumber:FormControl;
+  inputYearControl:FormControl;
+
   constructor(
     public dialogRef: MatDialogRef<AddCarDialogWindow>,
     @Inject(MAT_DIALOG_DATA) public car: Car,
     private carService: CarHttpService
   ) {
-
-
+    this.inputCarModel = new FormControl( "",[Validators.required, Validators.maxLength(15)]);
+    this.inputCarColor = new FormControl("", [Validators.required, Validators.maxLength(10)]);
+    this.inputCarPlateNumber = new FormControl("", [Validators.required, Validators.maxLength(10)]);
+    this.inputYearControl = new FormControl("", [Validators.required, Validators.minLength(4), Validators.maxLength(4)]);
   }
 
   saveCar(): void {
     const carModel = new Car();
-    carModel.model=this.inputCarModel;
-    carModel.yearManufactured=this.inputCarManufacturedYear;
-    carModel.color=this.inputCarColor;
+    carModel.model=this.inputCarModel.value;
+    carModel.yearManufactured=this.inputYearControl.value;
+    carModel.color=this.inputCarColor.value;
     carModel.engineTransmission=this.inputCarTransmission;
-    carModel.plateNO=this.inputCarPlateNumber;
+    carModel.plateNO=this.inputCarPlateNumber.value;
     this.carService.saveCar(carModel).subscribe(res => {
-        if(res){
-          console.log("New Car Save Successfully");
-          this.dialogRef.close();
-        }
+      if(res){
+        console.log("Car Creates Successfully");
+        this.dialogRef.close();
+      }
     });
-
   }
 
-  validateSaveButton(): boolean {
-    if(this.inputCarManufacturedYear && this.inputCarModel && this.inputCarColor && this.inputCarTransmission && this.inputCarPlateNumber){
-        if(this.inputCarManufacturedYear.toString().length===4){
-            return false;
-        }else{
-            return true;
-        }
+  validateUpdateButton(): boolean {
+    if(this.inputYearControl.value && this.inputCarModel.value && this.inputCarColor.value && this.inputCarTransmission && this.inputCarPlateNumber.value){
+      if(this.validateContentChange()){
+        return false;
+      }else{
+        return true;
+      }
     }
     return true;
   }
+
+  validateContentChange(): boolean{
+    if((this.inputCarColor.value===this.car.color &&
+      this.inputCarModel.value===this.car.model &&
+      this.inputCarTransmission===this.car.engineTransmission &&
+      this.inputYearControl.value===this.car.yearManufactured &&
+      this.inputCarPlateNumber.value===this.car.plateNO) ||
+      this.inputCarModel.value.length>15 ||
+      this.inputCarColor.value.length>10 ||
+      this.inputYearControl.value.toString().length!==4 ||
+      this.inputCarPlateNumber.value.length > 10
+    ) {
+      return false;
+    }else{
+      return true;
+    }
+  }
+
+  getErrorMessageInputModel(): string {
+    if(this.inputCarModel.hasError('required')){
+      return "It must have a value";
+    }
+
+    if(this.inputCarModel.value.length>15){
+      return "The value is in Max 15 chars"
+    }else{
+      return "";
+    }
+  }
+
+  getErrorMessageInputYear(): string {
+    if(this.inputYearControl.hasError('required')) {
+      return "It must have a value";
+    }
+
+    if(this.inputYearControl.value.length!==4){
+      return 'It must be a valid number in 4 digits';
+    }else{
+      return "";
+    }
+  }
+
+  getErrorMessageInputColor(): string {
+    if(this.inputCarColor.hasError('required')){
+      return "It must have a value";
+    }
+
+    if(this.inputCarColor.value.length>10){
+      return "The value is in Max 10 chars";
+    }else{
+      return "";
+    }
+
+  }
+
+  getErrorMessageInputPlateNO(): string {
+    if(this.inputCarPlateNumber.hasError('required')){
+      return "It must have a value";
+    }
+
+    if(this.inputCarPlateNumber.value.length>10){
+      return "The value is in Max 10 chars";
+    }else{
+      return "";
+    }
+  }
+
+
 
 
 }

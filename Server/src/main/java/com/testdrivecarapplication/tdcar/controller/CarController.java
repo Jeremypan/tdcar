@@ -15,8 +15,6 @@ import java.util.List;
 @RequestMapping("/api/car")
 public class CarController {
 
-    Logger logger;
-
     @Autowired
     CarService carService;
 

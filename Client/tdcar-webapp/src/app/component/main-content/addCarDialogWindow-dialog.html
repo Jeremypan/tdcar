@@ -2,30 +2,33 @@
   <p>Add New Car</p>
   <mat-form-field class="car-full-width" appearance="fill">
     <mat-label>Model</mat-label>
-    <input id="modelInput" matInput [(ngModel)]="inputCarModel"  type="text" required>
+    <input id="modelInput" matInput [formControl]="inputCarModel" type="text"  required>
+    <mat-error *ngIf="inputCarModel.invalid">{{getErrorMessageInputModel()}}</mat-error>
   </mat-form-field>
   <mat-form-field class="car-full-width" appearance="fill">
     <mat-label>Manufactured Year</mat-label>
-    <input id="yearManufacturedInput"  matInput [(ngModel)]="inputCarManufacturedYear" type="number" minlength="4" maxlength="4" pattern="\d{4}" required>
-
+    <input matInput type="number" minlength="4" maxlength="4" pattern="\d{4}" [formControl]="inputYearControl" required>
+    <mat-error *ngIf="inputYearControl.invalid"> {{getErrorMessageInputYear()}} </mat-error>
   </mat-form-field>
   <mat-form-field class="car-full-width" appearance="fill" required>
     <mat-label >Color</mat-label>
-    <input matInput [(ngModel)]="inputCarColor" type="text" required>
+    <input matInput [formControl]="inputCarColor" type="text" required>
+    <mat-error *ngIf="inputCarColor.invalid"> {{getErrorMessageInputColor()}}</mat-error>
   </mat-form-field>
   <mat-form-field class="car-full-width" appearance="fill">
     <mat-label>Engine Transmission</mat-label>
-    <mat-select [(ngModel)]="inputCarTransmission" name="car">
+    <mat-select [(value)]="inputCarTransmission"  name="car">
       <mat-option value="auto">Auto</mat-option>
       <mat-option value="manual">Manual</mat-option>
     </mat-select>
   </mat-form-field>
   <mat-form-field class="car-full-width" appearance="fill">
     <mat-label>Plate Number</mat-label>
-    <input matInput [(ngModel)]="inputCarPlateNumber" type="text" required>
+    <input matInput [formControl]="inputCarPlateNumber" type="text" required>
+    <mat-error *ngIf="inputCarPlateNumber.invalid">{{getErrorMessageInputPlateNO()}}</mat-error>
   </mat-form-field>
 </div>
 <div mat-dialog-actions>
-  <button mat-button (click)="saveCar()" [disabled]="validateSaveButton()" >Save</button>
+  <button mat-button (click)="saveCar()" [disabled]="validateUpdateButton()">Save</button>
   <button mat-button [mat-dialog-close] cdkFocusInitial>Close</button>
 </div>
