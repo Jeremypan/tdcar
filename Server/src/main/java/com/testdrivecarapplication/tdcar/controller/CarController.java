@@ -34,11 +34,11 @@ public class CarController {
     @CrossOrigin(origins = "http://localhost:4200")
     @RequestMapping(value="/saveCar", method = RequestMethod.POST)
     public boolean saveCar(@RequestBody Car car) throws DuplicatePlateNumberException {
-        if(carService.findCarByPlateNumber(car.getPlateNO()).size()>0){
+        List<Car> carList = carService.findCarByPlateNumber(car.getPlateNO());
+        if(carList.size()>0 && carList.get(0).getId()!=car.getId()){
             throw new DuplicatePlateNumberException("Car Plate Number "+car.getPlateNO()+" is not unique.");
         }
         carService.saveCar(car);
         return true;
     }
-
 }

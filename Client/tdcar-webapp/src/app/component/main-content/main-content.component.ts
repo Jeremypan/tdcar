@@ -149,7 +149,8 @@ export class AddCarDialogWindow{
       this.inputCarModel.value.length>15 ||
       this.inputCarColor.value.length>10 ||
       this.inputYearControl.value.toString().length!==4 ||
-      this.inputCarPlateNumber.value.length > 10 || this.allPlateNumbers.includes(this.inputCarPlateNumber.value)
+      this.inputCarPlateNumber.value.length > 10
+      || this.allPlateNumbers.includes(this.inputCarPlateNumber.value)
     ) {
       return false;
     }else{
@@ -285,8 +286,8 @@ export class EditCarDialogWindow{
        this.inputCarModel.value.length>15 ||
        this.inputCarColor.value.length>10 ||
        this.inputYearControl.value.toString().length!==4 ||
-       this.inputCarPlateNumber.value.length > 10 ||
-       this.allPlateNumbers.includes(this.inputCarPlateNumber.value)
+       this.inputCarPlateNumber.value.length > 10
+       || this.allPlateNumbers.includes(this.inputCarPlateNumber.value)
     ) {
         return false;
     }else{
